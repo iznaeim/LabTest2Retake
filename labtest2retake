@@ -1,0 +1,68 @@
+/**
+ * Program Purpose : Managing student grade system
+ * Programmer : Naim
+ * Date : 20 March 2024
+ */
+
+
+import java.io.*;
+import java.util.*;
+
+public class StudentGradeCalculator
+{
+    public static void main(String[] args)
+    {
+        try
+        {
+            File file = new File ("C:\\Users\\USER\\Desktop\\UPTM\\SWC2333\\JAVA\\studentData.txt");
+            Scanner scanner = new Scanner (file);
+            PrintWriter writer = new PrintWriter ("C:\\Users\\USER\\Desktop\\UPTM\\SWC2333\\JAVA\\gradeReport.txt");
+            double highestGrade = 100;
+            double lowestGrade = 0;
+            String highestStudent = "";
+            String lowestStudent = "";
+            
+            while (scanner.hasNextLine())
+            {
+                String line = scanner.nextLine();
+                StringTokenizer st = new StringTokenizer(line, ",");
+                String id = st.nextToken();
+                String name = st.nextToken();
+                double assignmentScore = Double.parseDouble(st.nextToken());
+                double quizScore = Double.parseDouble(st.nextToken());
+                double examScore = Double.parseDouble(st.nextToken());
+                
+                double overallGrade = assignmentScore * 0.2 + quizScore * 0.3 + examScore * 0.5;
+                
+                if (overallGrade > highestGrade)
+                {
+                   highestGrade = overallGrade;
+                   highestStudent = name;
+                }
+                
+                if (overallGrade < lowestGrade)
+                {
+                    lowestGrade = overallGrade;
+                    lowestStudent = name;
+                }
+                
+                writer.println("ID: " + id + ", Name: " + name + ", Overall Grade: " + overallGrade);
+            }
+            
+            writer.println("Highest Grade: " + highestStudent + " with a grade of " + highestGrade);
+            writer.println("Lowest Grade: " + lowestStudent + " with a grade of " + lowestGrade);
+            
+            scanner.close();
+            writer.close();
+        }
+        
+        catch (FileNotFoundException e)
+        {
+            System.out.println("File not found.");
+        }
+        catch (IOException e)
+        {
+            System.out.println("An error occured.");
+        }
+    }
+}
